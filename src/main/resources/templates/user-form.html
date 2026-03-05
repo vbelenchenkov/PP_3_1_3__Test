@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Form</title>
+</head>
+<body>
+<h1 th:text="${user.id == null} ? 'Create New User' : 'Edit User'">User Form</h1>
+
+<form th:action="@{/users/save}"
+      th:object="${user}"
+      method="post">
+
+    <!-- Скрытое поле для ID (только при редактировании) -->
+    <input type="hidden"
+           th:if="${user.id != null}"
+           th:field="*{id}" />
+
+    <p>
+        <label for="name">Name:</label><br/>
+        <input type="text"
+               id="name"
+               th:field="*{name}"
+               required />
+    </p>
+
+    <p>
+        <label for="email">Email:</label><br/>
+        <input type="email"
+               id="email"
+               th:field="*{email}"
+               required />
+    </p>
+
+    <p>
+        <label for="age">Age:</label><br/>
+        <input type="number"
+               id="age"
+               th:field="*{age}"
+               required />
+    </p>
+
+    <p>
+        <button type="submit">
+            <span th:text="${user.id == null} ? 'Create' : 'Update'">Save</span>
+        </button>
+        <a th:href="@{/users}">Cancel</a>
+    </p>
+</form>
+</body>
+</html>
