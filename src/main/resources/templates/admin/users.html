@@ -36,7 +36,6 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <!-- Строка "All users" с серым фоном -->
                                 <div class="bg-light p-2 mb-3 rounded">
                                     <strong>All users</strong>
                                 </div>
@@ -62,13 +61,23 @@
                                         <td th:text="${user.age}">25</td>
                                         <td th:text="${user.email}">anna@example.com</td>
                                         <td>
-                                            <span th:each="role, iterStat : ${user.roles}">
-                                                <span th:text="${role.name}">ROLE_USER</span>
-                                                <span th:if="${!iterStat.last}">, </span>
-                                            </span>
+                                                    <span th:each="role, iterStat : ${user.roles}">
+                                                        <span th:text="${role.name}">ROLE_USER</span>
+                                                        <span th:if="${!iterStat.last}">, </span>
+                                                    </span>
                                         </td>
                                         <td>
-                                            <a th:href="@{/admin/edit/{id}(id=${user.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                            <button type="button"
+                                                    class="btn btn-sm btn-primary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editUserModal"
+                                                    th:data-user-id="${user.id}"
+                                                    th:data-user-firstname="${user.firstName}"
+                                                    th:data-user-lastname="${user.lastName}"
+                                                    th:data-user-age="${user.age}"
+                                                    th:data-user-email="${user.email}">
+                                                Edit
+                                            </button>
                                         </td>
                                         <td>
                                             <form th:action="@{/admin/delete/{id}(id=${user.id})}" method="post" style="display: inline;">
@@ -86,5 +95,74 @@
         </div>
     </div>
 </div>
+
+<!-- Модальное окно для редактирования -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/admin/update}" method="post" id="editUserForm">
+                <input type="hidden" name="id" id="editUserId">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">First name</label>
+                        <input type="text" class="form-control" name="firstName" id="editFirstName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last name</label>
+                        <input type="text" class="form-control" name="lastName" id="editLastName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-control" name="age" id="editAge" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="editEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select class="form-select" name="roles" multiple size="2" id="editRoles">
+                            <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
+                        </select>
+                        <div class="form-text">Hold Ctrl (Cmd) to select multiple roles</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript для заполнения модального окна данными пользователя
+    const editUserModal = document.getElementById('editUserModal');
+    if (editUserModal) {
+        editUserModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const userId = button.getAttribute('data-user-id');
+            const firstName = button.getAttribute('data-user-firstname');
+            const lastName = button.getAttribute('data-user-lastname');
+            const age = button.getAttribute('data-user-age');
+            const email = button.getAttribute('data-user-email');
+
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editFirstName').value = firstName;
+            document.getElementById('editLastName').value = lastName;
+            document.getElementById('editAge').value = age;
+            document.getElementById('editEmail').value = email;
+        });
+    }
+</script>
 </body>
 </html>

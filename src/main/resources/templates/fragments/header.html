@@ -12,7 +12,6 @@
 <!-- Навигационная панель -->
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container">
-        <!-- Слева: email и роли -->
         <div class="navbar-text text-white">
             <span sec:authentication="name"></span> with roles:
             <span th:each="role, roleStat : ${#authentication.principal.roles}">
@@ -20,8 +19,6 @@
                 <span th:if="${!roleStat.last}">, </span>
             </span>
         </div>
-
-        <!-- Справа: только кнопка Logout -->
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
@@ -39,7 +36,7 @@
     <!-- Здесь будет контент каждой страницы -->
 </div>
 
-<!-- Bootstrap JS -->
+<!-- Bootstrap JS (обязательно!) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
