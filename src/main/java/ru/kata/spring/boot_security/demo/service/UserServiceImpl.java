@@ -39,6 +39,14 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public User createUser(User user, List<Integer> roleIds) {
+        System.out.println("=== Creating user ===");
+        System.out.println("firstName: " + user.getFirstName());
+        System.out.println("lastName: " + user.getLastName());
+        System.out.println("email: " + user.getEmail());
+        System.out.println("age: " + user.getAge());
+        System.out.println("password: " + (user.getPassword() != null ? "set" : "null"));
+        System.out.println("roleIds: " + roleIds);
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>(roleRepository.findAllById(roleIds));
         user.setRoles(roles);
@@ -50,7 +58,8 @@ public class UserServiceImpl implements UserService{
     public User updateUser(Integer id, User updatedUser, List<Integer> roleIds) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        existingUser.setName(updatedUser.getName());
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setAge(updatedUser.getAge());
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {

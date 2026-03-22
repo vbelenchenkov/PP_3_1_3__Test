@@ -59,6 +59,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
