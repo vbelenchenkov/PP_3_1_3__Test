@@ -24,7 +24,6 @@
     <div class="row">
         <div class="col-md-2 bg-light vh-100 p-3">
             <ul class="nav flex-column">
-                <!-- Пункт Admin показываем только если у пользователя есть роль ADMIN -->
                 <li sec:authorize="hasRole('ADMIN')" class="nav-item mb-2">
                     <a th:href="@{/admin}" class="nav-link text-dark" th:classappend="${#httpServletRequest.requestURI.contains('/admin')} ? 'active bg-primary text-white' : ''">Admin</a>
                 </li>
@@ -38,7 +37,6 @@
             <div class="container-fluid mt-4">
                 <div class="row">
                     <div class="col-12">
-                        <!-- Блок с серым фоном для заголовка и вкладок -->
                         <div class="bg-light p-3 rounded mb-0">
                             <h1 class="mb-3">Admin panel</h1>
                             <div class="tabs-container d-flex gap-2">
@@ -55,14 +53,11 @@
                             </div>
                         </div>
 
-                        <!-- Белая область для формы -->
                         <div class="bg-white pt-3 pb-0 px-3 rounded">
-                            <!-- Блок "Add new user" в стиле "All users" -->
                             <div class="all-users-header">
                                 Add new user
                             </div>
                             <form th:action="@{/admin/save}" th:object="${user}" method="post">
-                                <!-- Поля формы, уже обёрнутые в form-group-centered -->
                                 <div class="form-group-centered">
                                     <label class="form-label">First name</label>
                                     <input type="text" class="form-control highlight-input" th:field="*{firstName}" required>

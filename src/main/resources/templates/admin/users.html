@@ -4,7 +4,6 @@
 <head th:replace="fragments/header :: head">
     <title>Admin Panel</title>
     <style>
-        /* Убираем вертикальные границы у таблицы, оставляем только горизонтальные */
         .table th, .table td {
             border-top: 1px solid #dee2e6;
             border-bottom: none;
@@ -14,11 +13,9 @@
         .table thead th {
             border-bottom-width: 2px;
         }
-        /* Делаем фон для нечётных строк светлее */
         .table-striped>tbody>tr:nth-of-type(odd) {
             background-color: #f8f9fa;
         }
-        /* Стили вкладок (высокая специфичность) */
         .tabs-container a.tab-link,
         .tabs-container a.tab-link.active,
         .tabs-container a.tab-link:not(.active) {
@@ -41,7 +38,6 @@
             border-bottom: 1px solid #dee2e6;
             margin-bottom: 0;
         }
-        /* Строка "All users" примыкает к вкладкам */
         .all-users-header {
             background-color: #e9ecef;
             padding: 0.5rem 1rem;
@@ -51,7 +47,6 @@
             border-top: 1px solid #dee2e6;
             border-bottom: 1px solid #dee2e6;
         }
-        /* Убираем лишние отступы у карточки */
         .card {
             border-top: none;
         }
@@ -60,7 +55,6 @@
             border-bottom: none;
             padding: 0;
         }
-        /* Стили для модальных окон (вертикальная форма, поля по центру) */
         .modal-body .form-label {
             font-weight: bold;
             text-align: center;
@@ -81,24 +75,25 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Левая навигация -->
         <div class="col-md-2 bg-white vh-100 p-3">
             <ul class="nav flex-column">
                 <li sec:authorize="hasRole('ADMIN')" class="nav-item mb-2">
-                    <a th:href="@{/admin}" class="nav-link text-dark" th:classappend="${#httpServletRequest.requestURI == '/admin' ? 'active bg-primary text-white' : ''}">Admin</a>
+                    <a th:href="@{/admin}" class="nav-link text-dark"
+                       th:classappend="${#httpServletRequest.requestURI == '/admin' ? 'active bg-primary text-white' :
+                       ''}">Admin</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a th:href="@{/user}" class="nav-link text-dark" th:classappend="${#httpServletRequest.requestURI == '/user' ? 'active bg-primary text-white' : ''}">User</a>
+                    <a th:href="@{/user}" class="nav-link text-dark"
+                       th:classappend="${#httpServletRequest.requestURI == '/user' ? 'active bg-primary text-white' :
+                       ''}">User</a>
                 </li>
             </ul>
         </div>
 
-        <!-- Правая часть с таблицей -->
         <div class="col-md-10 bg-light">
             <div class="container-fluid mt-4">
                 <div class="row">
                     <div class="col-12">
-                        <!-- Блок с серым фоном для заголовка и вкладок -->
                         <div class="bg-light p-3 rounded mb-0">
                             <h1 class="mb-3">Admin panel</h1>
                             <div class="tabs-container d-flex gap-2">
@@ -114,11 +109,9 @@
                                 </a>
                             </div>
                         </div>
-
-                        <!-- Белая область для таблицы -->
                         <div class="bg-white pt-3 pb-4 px-3 rounded mb-0">
 
-                            <!-- Блок "All users" -->
+
                             <div class="all-users-header">
                                 All users
                             </div>
@@ -146,11 +139,12 @@
                                         <td>
                                                     <span th:each="role, iterStat : ${user.roles}">
                                                         <span th:text="${role.displayName}">ROLE_USER</span>
-                                                        <span th:if="${!iterStat.last}">, </span>
+                                                        <span th:if="${!iterStat.last}"> </span>
                                                     </span>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                            <button type="button" class="btn btn-sm btn-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#editUserModal"
                                                     th:data-user-id="${user.id}"
                                                     th:data-user-firstname="${user.firstName}"
                                                     th:data-user-lastname="${user.lastName}"
@@ -158,7 +152,8 @@
                                                     th:data-user-email="${user.email}">Edit</button>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal"
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteUserModal"
                                                     th:data-user-id="${user.id}"
                                                     th:data-user-firstname="${user.firstName}"
                                                     th:data-user-lastname="${user.lastName}"
@@ -178,7 +173,6 @@
     </div>
 </div>
 
-<!-- Модальное окно редактирования -->
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -188,44 +182,36 @@
             </div>
             <form th:action="@{/admin/update}" method="post">
                 <div class="modal-body">
-                    <!-- ID (серый фон, только для чтения) -->
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <label class="form-label">ID</label>
                         <div class="bg-secondary bg-opacity-10 p-2 rounded text-start w-30" id="editUserIdDisplay">—</div>
                         <input type="hidden" name="id" id="editUserId">
                     </div>
-                    <!-- First Name -->
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <label class="form-label">First Name</label>
                         <input type="text" class="form-control text-start w-30" name="firstName" id="editFirstName" required>
                     </div>
-                    <!-- Last Name -->
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <label class="form-label">Last Name</label>
                         <input type="text" class="form-control text-start w-30" name="lastName" id="editLastName" required>
                     </div>
-                    <!-- Age -->
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <label class="form-label">Age</label>
                         <input type="number" class="form-control text-start w-30" name="age" id="editAge" required>
                     </div>
-                    <!-- Email -->
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <label class="form-label">Email</label>
                         <input type="email" class="form-control text-start w-30" name="email" id="editEmail" required>
                     </div>
-                    <!-- Password -->
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <label class="form-label">Password</label>
-                        <input type="password" class="form-control text-start w-30" name="password" placeholder="Leave blank to keep current">
+                        <input type="password" class="form-control text-start w-30" name="password">
                     </div>
-                    <!-- Role (мультиселект) -->
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <label class="form-label">Role</label>
                         <select class="form-select text-start w-30" name="roles" multiple size="2">
                             <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.displayName}"></option>
                         </select>
-                        <div class="form-text text-center">Hold Ctrl (Cmd) to select multiple roles</div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -237,7 +223,6 @@
     </div>
 </div>
 
-<!-- Модальное окно удаления -->
 <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -246,35 +231,30 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- ID -->
                 <div class="mb-3 d-flex flex-column align-items-center">
                     <label class="form-label">ID</label>
                     <div class="bg-secondary bg-opacity-10 p-2 rounded text-start w-30" id="deleteUserIdDisplay"></div>
                 </div>
-                <!-- First Name -->
                 <div class="mb-3 d-flex flex-column align-items-center">
                     <label class="form-label">First Name</label>
                     <div class="bg-secondary bg-opacity-10 p-2 rounded text-start w-30" id="deleteUserFirstName"></div>
                 </div>
-                <!-- Last Name -->
                 <div class="mb-3 d-flex flex-column align-items-center">
                     <label class="form-label">Last Name</label>
                     <div class="bg-secondary bg-opacity-10 p-2 rounded text-start w-30" id="deleteUserLastName"></div>
                 </div>
-                <!-- Age -->
                 <div class="mb-3 d-flex flex-column align-items-center">
                     <label class="form-label">Age</label>
                     <div class="bg-secondary bg-opacity-10 p-2 rounded text-start w-30" id="deleteUserAge"></div>
                 </div>
-                <!-- Email -->
                 <div class="mb-3 d-flex flex-column align-items-center">
                     <label class="form-label">Email</label>
                     <div class="bg-secondary bg-opacity-10 p-2 rounded text-start w-30" id="deleteUserEmail"></div>
                 </div>
-                <!-- Roles (вертикальный список) -->
                 <div class="mb-3 d-flex flex-column align-items-center">
                     <label class="form-label">Roles</label>
-                    <ul class="list-unstyled bg-secondary bg-opacity-10 p-2 rounded text-start w-30 mb-0" id="deleteUserRolesList"></ul>
+                    <ul class="list-unstyled bg-secondary bg-opacity-10 p-2 rounded text-start w-30 mb-0"
+                        id="deleteUserRolesList"></ul>
                 </div>
             </div>
             <div class="modal-footer">
@@ -289,7 +269,6 @@
 </div>
 
 <script>
-    // Заполнение модального окна редактирования
     const editModal = document.getElementById('editUserModal');
     if (editModal) {
         editModal.addEventListener('show.bs.modal', function(event) {
@@ -309,7 +288,6 @@
         });
     }
 
-    // Заполнение модального окна удаления
     const deleteModal = document.getElementById('deleteUserModal');
     if (deleteModal) {
         deleteModal.addEventListener('show.bs.modal', function(event) {
@@ -347,19 +325,18 @@
     }
 </script>
 
-<!-- Временно добавлен Bootstrap JS для гарантии работы модальных окон -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 <style>
-    /* Строка "All users" */
+
     .all-users-header {
         background-color: #e9ecef;
         padding: 0.5rem 1rem;
         padding-left: 6mm;
         margin: 0;
         font-weight: 500;
-        font-size: 1.6rem;  /* увеличиваем текст в 1.6 раза относительно базового размера (обычно 1rem = 16px) */
+        font-size: 1.6rem;
         border-top: 1px solid #dee2e6;
         border-bottom: 1px solid #dee2e6;
     }
@@ -373,7 +350,7 @@
         margin-bottom: 0;
         padding-bottom: 0;
     }
-    /* Выравнивание ширины серого блока и таблицы */
+
     .bg-light.p-3.rounded,
     .bg-white.p-3.rounded {
         width: 100%;
@@ -381,7 +358,11 @@
     }
     .w-30 {
         width: 30% !important;
-        min-width: 200px; /* чтобы на маленьких экранах не сжималось */
+        min-width: 200px;
+    }
+    #editUserModal .form-label,
+    #deleteUserModal .form-label {
+        font-weight: 700 !important;
     }
 </style>
 </html>

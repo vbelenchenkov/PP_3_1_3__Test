@@ -9,12 +9,13 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Левая навигация -->
+
         <div class="col-md-2 bg-white vh-100 p-3">
             <ul class="nav flex-column">
                 <li sec:authorize="hasRole('ADMIN')" class="nav-item mb-2">
                     <a th:href="@{/admin}" class="nav-link text-dark"
-                       th:classappend="${#httpServletRequest.requestURI.contains('/admin')} ? 'active bg-primary text-white' : ''">Admin</a>
+                       th:classappend="${#httpServletRequest.requestURI.contains('/admin')} ?
+                       'active bg-primary text-white' : ''">Admin</a>
                 </li>
                 <li class="nav-item mb-2">
                     <a th:href="@{/user}" class="nav-link text-dark active bg-primary text-white">User</a>
@@ -22,17 +23,14 @@
             </ul>
         </div>
 
-        <!-- Правая часть -->
         <div class="col-md-10 bg-light">
             <div class="container-fluid mt-4">
                 <div class="row">
                     <div class="col-12">
-                        <!-- Серый блок с заголовком (чуть темнее, если нужно) -->
                         <div class="bg-secondary bg-opacity-10 p-3 rounded mb-0">
                             <h1 class="mb-3">User information-page</h1>
                         </div>
 
-                        <!-- Белая область для таблицы (убираем отступ снизу) -->
                         <div class="bg-white pt-3 pb-4 px-3 rounded">
                             <div class="all-users-header">
                                 About user
@@ -59,7 +57,7 @@
                                         <td>
                                             <span th:each="role, iterStat : ${user.roles}">
                                                 <span th:text="${#strings.replace(role.name, 'ROLE_', '')}">USER</span>
-                                                <span th:if="${!iterStat.last}">, </span>
+                                                <span th:if="${!iterStat.last}"> </span>
                                             </span>
                                         </td>
                                     </tr>
