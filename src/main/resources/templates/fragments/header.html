@@ -68,22 +68,18 @@
 <body>
 
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container">
-        <div class="navbar-text text-white">
+    <div class="container-fluid">
+        <div class="navbar-text text-white me-auto">
             <span sec:authentication="name"></span> with roles:
             <span th:each="role, roleStat : ${#authentication.principal.roles}">
                 <span th:text="${role.displayName}"></span>
-                <span th:if="${!roleStat.last}"> </span>
+                <span th:if="${!roleStat.last}">, </span>
             </span>
         </div>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
-                    </form>
-                </li>
-            </ul>
+        <div class="ms-auto">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+            </form>
         </div>
     </div>
 </nav>
